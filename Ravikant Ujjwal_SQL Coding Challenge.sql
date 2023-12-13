@@ -134,10 +134,12 @@ WHERE Jobs.Salary >= 40000 AND Jobs.Salary <= 60000;
 parameter for the ApplicantID, and return a result set with the job titles, company names, and
 application dates for all the jobs the applicant has applied to.*/
 
-SELECT Jobs.JobTitle,(SELECT CompanyName FROM Companies WHERE CompanyID = Jobs.CompanyID) AS CompanyName,Applications.ApplicationDate
+SELECT Jobs.JobTitle, Companies.CompanyName,Applications.ApplicationDate
 FROM Applications
 JOIN Jobs
 ON Applications.JobID = Jobs.JobID
+join Companies
+on Jobs.CompanyID=Companies.CompanyID
 WHERE Applications.ApplicantID = 2;
 
 /*Q8--Create an SQL query that calculates and displays the average salary offered by all companies for
@@ -152,7 +154,7 @@ companies have the same maximum count.*/
 
 SELECT TOP 1 WITH TIES Companies.CompanyName,COUNT(Jobs.JobID) AS No_of_jobs
 FROM Companies
-LEFT JOIN Jobs
+JOIN Jobs
 ON Companies.CompanyID = Jobs.CompanyID
 GROUP BY Companies.CompanyID, Companies.CompanyName
 ORDER BY No_of_jobs DESC;
